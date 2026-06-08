@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Virtus design tokens. A modern dark theme: light ink on near-black canvas,
+   raised dark surfaces, with a single confident indigo accent.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-ink: #f4f5f7;
+  --color-ink-soft: #9aa1ad;
+  --color-canvas: #0a0b0d;
+  --color-surface: #15171c;
+  --color-line: #282b33;
+  --color-brand: #6366f1;
+  --color-brand-dark: #4f46e5;
+  --color-brand-soft: #1e1e3a;
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  --radius-card: 1rem;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hide number-input spinners for a cleaner quantity field. */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
