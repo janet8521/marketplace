@@ -56,9 +56,9 @@ export function Header() {
         {/* center: logo */}
         <Link
           href="/"
-          className="justify-self-center text-3xl font-extrabold tracking-tight text-brand sm:text-4xl"
+          className="max-w-[16rem] justify-self-center text-center text-lg font-extrabold uppercase leading-tight tracking-tight text-brand sm:max-w-none sm:text-2xl"
         >
-          Virtus
+          Thee Brins Safe Market
         </Link>
 
         {/* right: actions */}

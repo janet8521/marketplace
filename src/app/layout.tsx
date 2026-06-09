@@ -12,7 +12,7 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Virtus — Modern Marketplace",
+  title: "Thee Brins Safe Market",
   description:
     "A modern marketplace where our team keeps the catalog fresh in real time.",
 };

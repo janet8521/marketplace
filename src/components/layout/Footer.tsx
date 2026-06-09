@@ -11,7 +11,9 @@ export function Footer() {
     <footer className="mt-auto bg-brand text-white">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
-          <p className="text-lg font-extrabold tracking-tight">Virtus</p>
+          <p className="text-lg font-extrabold uppercase tracking-tight">
+            Thee Brins Safe Market
+          </p>
           <p className="mt-1 text-sm text-white/70">
             A modern storefront for thoughtfully chosen goods.
           </p>
@@ -26,7 +28,8 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-white/15 px-4 py-4 text-center text-xs text-white/60 sm:px-6">
-        © {new Date().getFullYear()} Virtus. All rights reserved.
+        © {new Date().getFullYear()} Thee Brins Safe Market. All rights
+        reserved.
       </div>
     </footer>
   );

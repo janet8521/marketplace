@@ -43,7 +43,9 @@ function LoginForm() {
           <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand text-sm font-bold text-white">
             V
           </span>
-          <span className="text-xl font-semibold tracking-tight">Virtus</span>
+          <span className="text-xl font-semibold uppercase tracking-tight">
+            Thee Brins Safe Market
+          </span>
         </Link>
 
         <div className="rounded-card border border-line bg-surface p-8 shadow-sm">

@@ -7,7 +7,7 @@ export function SetupNotice() {
         Setup needed
       </span>
       <h1 className="mt-5 text-3xl font-semibold tracking-tight">
-        Connect Virtus to Supabase
+        Connect Thee Brins Safe Market to Supabase
       </h1>
       <p className="mt-3 text-ink-soft">
         The marketplace needs a Supabase project for its database, auth, storage

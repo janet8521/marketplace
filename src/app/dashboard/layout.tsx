@@ -27,7 +27,7 @@ export default async function DashboardLayout({
                 V
               </span>
               <span className="font-semibold tracking-tight">
-                Virtus <span className="text-ink-soft">Admin</span>
+                Thee Brins <span className="text-ink-soft">Admin</span>
               </span>
             </Link>
             <nav className="hidden gap-5 text-sm text-ink-soft sm:flex">
