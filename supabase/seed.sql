@@ -5,9 +5,8 @@
 
 insert into public.categories (name, slug) values
   ('Electronics', 'electronics'),
-  ('Home & Living', 'home-living'),
-  ('Apparel', 'apparel'),
-  ('Accessories', 'accessories')
+  ('Accessories', 'accessories'),
+  ('Furniture', 'furniture')
 on conflict (slug) do nothing;
 
 insert into public.products (name, slug, description, price, currency, category_id, image_url, stock, sku, is_active)

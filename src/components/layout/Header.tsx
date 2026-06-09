@@ -76,9 +76,10 @@ export function Header() {
           <button
             onClick={() => setMenuOpen((o) => !o)}
             className="sm:hidden"
-            aria-label="Toggle menu"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
           >
-            <MenuIcon />
+            {menuOpen ? <CloseIcon /> : <MenuIcon />}
           </button>
         </div>
       </div>
@@ -86,16 +87,19 @@ export function Header() {
       {/* nav */}
       <nav className="border-y border-line">
         <ul
-          className={`mx-auto max-w-6xl gap-8 px-4 py-3 text-sm font-bold uppercase tracking-wide text-brand sm:flex sm:justify-center sm:px-6 ${
+          className={`mx-auto max-w-6xl text-sm font-bold uppercase tracking-wide text-brand sm:flex sm:justify-center sm:gap-8 sm:px-6 sm:py-3 ${
             menuOpen ? "flex flex-col" : "hidden sm:flex"
           }`}
         >
           {navLinks.map((link, i) => (
-            <li key={`${link.label}-${i}`}>
+            <li
+              key={`${link.label}-${i}`}
+              className="border-b border-line last:border-b-0 sm:border-b-0"
+            >
               <Link
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="transition-colors hover:text-brand-dark"
+                className="block px-4 py-4 transition-colors hover:bg-canvas hover:text-brand-dark sm:px-0 sm:py-0 sm:hover:bg-transparent"
               >
                 {link.label}
               </Link>
@@ -144,6 +148,15 @@ function MenuIcon() {
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
       <line x1="4" y1="8" x2="20" y2="8" />
       <line x1="4" y1="16" x2="20" y2="16" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <line x1="6" y1="6" x2="18" y2="18" />
+      <line x1="18" y1="6" x2="6" y2="18" />
     </svg>
   );
 }
