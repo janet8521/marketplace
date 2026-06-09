@@ -8,7 +8,7 @@ const FALLBACK =
   "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?auto=format&fit=crop&w=1400&q=80";
 
 export function CoverImage({ className }: { className?: string }) {
-  const [src, setSrc] = useState("/cover.jpg");
+  const [src, setSrc] = useState("/cover.jpeg");
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
