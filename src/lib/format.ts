@@ -1,7 +1,7 @@
 // Money + text formatting helpers shared across the app.
 
-export function formatPrice(amount: number, currency = "USD") {
-  return new Intl.NumberFormat("en-US", {
+export function formatPrice(amount: number, currency = "KES") {
+  return new Intl.NumberFormat("en-KE", {
     style: "currency",
     currency,
   }).format(amount);

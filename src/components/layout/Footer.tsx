@@ -8,24 +8,24 @@ export function Footer() {
   if (pathname.startsWith("/dashboard") || pathname === "/login") return null;
 
   return (
-    <footer className="mt-auto border-t border-line bg-surface">
+    <footer className="mt-auto bg-brand text-white">
       <div className="mx-auto flex max-w-6xl flex-col gap-4 px-4 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-6">
         <div>
-          <p className="text-sm font-semibold">Virtus Marketplace</p>
-          <p className="mt-1 text-sm text-ink-soft">
-            A modern storefront, updated live by our team.
+          <p className="text-lg font-extrabold tracking-tight">Virtus</p>
+          <p className="mt-1 text-sm text-white/70">
+            A modern storefront for thoughtfully chosen goods.
           </p>
         </div>
-        <div className="flex gap-6 text-sm text-ink-soft">
-          <Link href="/" className="hover:text-ink">
+        <div className="flex gap-6 text-sm font-semibold uppercase tracking-wide text-white/80">
+          <Link href="/" className="hover:text-white">
             Shop
           </Link>
-          <Link href="/cart" className="hover:text-ink">
+          <Link href="/cart" className="hover:text-white">
             Cart
           </Link>
         </div>
       </div>
-      <div className="border-t border-line px-4 py-4 text-center text-xs text-ink-soft sm:px-6">
+      <div className="border-t border-white/15 px-4 py-4 text-center text-xs text-white/60 sm:px-6">
         © {new Date().getFullYear()} Virtus. All rights reserved.
       </div>
     </footer>

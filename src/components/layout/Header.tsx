@@ -1,78 +1,149 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/components/cart/CartProvider";
-
-const navLinks = [
-  { href: "/", label: "Shop" },
-  { href: "/#categories", label: "Categories" },
-];
+import { createClient } from "@/lib/supabase/client";
+import { isSupabaseConfigured } from "@/lib/supabase/config";
+import type { Category } from "@/lib/types";
 
 export function Header() {
   const { itemCount } = useCart();
   const pathname = usePathname();
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isSupabaseConfigured()) return;
+    const supabase = createClient();
+    supabase
+      .from("categories")
+      .select("*")
+      .order("name")
+      .then(({ data }) => setCategories((data as Category[]) ?? []));
+  }, []);
 
   // Keep the storefront chrome out of the employee dashboard.
   if (pathname.startsWith("/dashboard") || pathname === "/login") return null;
 
+  const navLinks = [
+    { href: "/", label: "All" },
+    ...categories.map((c) => ({ href: `/#catalog`, label: c.name })),
+  ];
+
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-canvas/80 backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-6 px-4 sm:px-6">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="grid h-8 w-8 place-items-center rounded-lg bg-brand text-sm font-bold text-white">
-            V
-          </span>
-          <span className="text-lg font-semibold tracking-tight">Virtus</span>
+    <header className="bg-surface">
+      {/* top accent bar */}
+      <div className="h-1.5 w-full bg-brand" />
+
+      <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-5 sm:px-6">
+        {/* left: socials */}
+        <div className="hidden items-center gap-2 sm:flex">
+          <Social label="Facebook" href="#">
+            <path d="M14 9h2V6h-2c-1.7 0-3 1.3-3 3v1.5H9V13h2v6h2.5v-6H15l.5-2.5h-2V9.5c0-.3.2-.5.5-.5Z" />
+          </Social>
+          <Social label="Instagram" href="#">
+            <rect x="6" y="6" width="12" height="12" rx="3.5" />
+            <circle cx="12" cy="12" r="3" />
+            <circle cx="15.5" cy="8.5" r="0.6" />
+          </Social>
+          <Social label="Twitter" href="#">
+            <path d="M19 8.3c-.5.2-1 .4-1.6.5.6-.3 1-.9 1.2-1.6-.5.3-1.1.6-1.8.7a2.8 2.8 0 0 0-4.8 2.6 8 8 0 0 1-5.8-3 2.8 2.8 0 0 0 .9 3.8c-.5 0-.9-.1-1.3-.3a2.8 2.8 0 0 0 2.3 2.8c-.4.1-.9.2-1.3.1a2.8 2.8 0 0 0 2.6 2 5.7 5.7 0 0 1-4.2 1.1 8 8 0 0 0 12.4-7.2c.6-.4 1-.9 1.5-1.6Z" />
+          </Social>
+        </div>
+
+        {/* center: logo */}
+        <Link
+          href="/"
+          className="justify-self-center text-3xl font-extrabold tracking-tight text-brand sm:text-4xl"
+        >
+          Virtus
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm text-ink-soft sm:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition-colors hover:text-ink"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-3">
+        {/* right: actions */}
+        <div className="flex items-center justify-end gap-3 text-brand">
           <Link
             href="/cart"
-            className="relative grid h-10 w-10 place-items-center rounded-full border border-line bg-surface transition-colors hover:border-ink/30"
+            className="relative"
             aria-label={`Cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`}
           >
             <CartIcon />
-            {itemCount > 0 && (
-              <span className="absolute -right-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-brand px-1 text-[11px] font-semibold text-white">
-                {itemCount}
-              </span>
-            )}
+            <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-accent px-1 text-[10px] font-bold text-white">
+              {itemCount}
+            </span>
           </Link>
+          <button
+            onClick={() => setMenuOpen((o) => !o)}
+            className="sm:hidden"
+            aria-label="Toggle menu"
+          >
+            <MenuIcon />
+          </button>
         </div>
       </div>
+
+      {/* nav */}
+      <nav className="border-y border-line">
+        <ul
+          className={`mx-auto max-w-6xl gap-8 px-4 py-3 text-sm font-bold uppercase tracking-wide text-brand sm:flex sm:justify-center sm:px-6 ${
+            menuOpen ? "flex flex-col" : "hidden sm:flex"
+          }`}
+        >
+          {navLinks.map((link, i) => (
+            <li key={`${link.label}-${i}`}>
+              <Link
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="transition-colors hover:text-brand-dark"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
+  );
+}
+
+function Social({
+  label,
+  href,
+  children,
+}: {
+  label: string;
+  href: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      className="grid h-8 w-8 place-items-center rounded-full border border-line text-brand transition-colors hover:bg-brand hover:text-white"
+    >
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+        {children}
+      </svg>
+    </a>
   );
 }
 
 function CartIcon() {
   return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
       <circle cx="9" cy="21" r="1" />
       <circle cx="20" cy="21" r="1" />
       <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+    </svg>
+  );
+}
+
+function MenuIcon() {
+  return (
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+      <line x1="4" y1="8" x2="20" y2="8" />
+      <line x1="4" y1="16" x2="20" y2="16" />
     </svg>
   );
 }

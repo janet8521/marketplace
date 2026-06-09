@@ -66,7 +66,7 @@ export function ProductForm({
       slug: slugify(String(form.get("slug")) || String(form.get("name"))),
       description: String(form.get("description")).trim() || null,
       price: Number(form.get("price")),
-      currency: String(form.get("currency")) || "USD",
+      currency: String(form.get("currency")) || "KES",
       category_id: String(form.get("category_id")) || null,
       stock: Number(form.get("stock")),
       sku: String(form.get("sku")).trim() || null,
@@ -151,7 +151,7 @@ export function ProductForm({
           <Field label="Currency">
             <input
               name="currency"
-              defaultValue={product?.currency ?? "USD"}
+              defaultValue={product?.currency ?? "KES"}
               className={inputClass}
             />
           </Field>

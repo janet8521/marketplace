@@ -17,6 +17,7 @@ export function DashboardProductList({
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [query, setQuery] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   // Stay in sync with edits made elsewhere (other staff, other tabs).
   useEffect(() => {
@@ -57,26 +58,47 @@ export function DashboardProductList({
 
   async function toggleActive(product: Product) {
     setBusyId(product.id);
+    setError(null);
     const supabase = createClient();
-    await supabase
+    // `.select()` returns the rows actually changed — if it's empty, the
+    // database blocked the write (permissions) even though no error was thrown.
+    const { data, error: err } = await supabase
       .from("products")
       .update({ is_active: !product.is_active })
-      .eq("id", product.id);
+      .eq("id", product.id)
+      .select();
     setBusyId(null);
-    // Realtime will reconcile state, but update optimistically too.
+
+    if (err) return setError(err.message);
+    if (!data || data.length === 0) {
+      return setError(
+        "That change was blocked — only the owner can publish/hide products.",
+      );
+    }
     setProducts((prev) =>
-      prev.map((p) =>
-        p.id === product.id ? { ...p, is_active: !p.is_active } : p,
-      ),
+      prev.map((p) => (p.id === product.id ? (data[0] as Product) : p)),
     );
   }
 
   async function remove(product: Product) {
     if (!confirm(`Delete "${product.name}"? This cannot be undone.`)) return;
     setBusyId(product.id);
+    setError(null);
     const supabase = createClient();
-    await supabase.from("products").delete().eq("id", product.id);
+    const { data, error: err } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", product.id)
+      .select();
     setBusyId(null);
+
+    if (err) return setError(err.message);
+    if (!data || data.length === 0) {
+      return setError(
+        `"${product.name}" was NOT deleted. Your account isn't recognised as the owner (or you're signed out). ` +
+          "Check that your profile role is 'admin' in Supabase.",
+      );
+    }
     setProducts((prev) => prev.filter((p) => p.id !== product.id));
   }
 
@@ -138,6 +160,18 @@ export function DashboardProductList({
 
   return (
     <div>
+      {error && (
+        <div className="mb-4 flex items-start justify-between gap-3 rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+          <span>{error}</span>
+          <button
+            onClick={() => setError(null)}
+            className="shrink-0 font-medium hover:text-red-200"
+          >
+            Dismiss
+          </button>
+        </div>
+      )}
+
       <input
         type="search"
         value={query}
