@@ -57,7 +57,7 @@ function Hero({
   return (
     <section className="bg-surface">
       <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6">
-        <h1 className="text-center text-3xl font-extrabold tracking-tight text-brand sm:text-5xl">
+        <h1 className="text-balance text-center text-2xl font-extrabold tracking-tight text-brand sm:text-4xl lg:text-5xl">
           Shop our latest products
         </h1>
       </div>
@@ -71,10 +71,10 @@ function Hero({
             <CoverImage className="h-[360px] w-full rounded-md object-cover sm:h-[460px] lg:h-[520px]" />
 
             {/* floating product card */}
-            <div className="mt-[-2rem] w-full bg-surface p-6 shadow-xl sm:p-8 lg:absolute lg:left-8 lg:top-8 lg:mt-0 lg:max-w-xs">
-              <h2 className="text-2xl font-extrabold leading-tight text-brand">
-                Discover our
-                <br />
+            <div className="relative z-10 mx-3 -mt-8 rounded-card bg-surface p-6 shadow-xl sm:mx-6 sm:p-8 lg:mx-0 lg:mt-0 lg:max-w-xs lg:absolute lg:left-8 lg:top-8">
+              <h2 className="text-xl font-extrabold leading-tight text-brand sm:text-2xl">
+                Discover our{" "}
+                <br className="hidden lg:inline" />
                 new Collection
               </h2>
               {fromPrice && (
