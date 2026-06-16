@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import type { Category, Product, ProductWithCategory } from "@/lib/types";
 import { ProductCard } from "./ProductCard";
@@ -14,9 +15,29 @@ export function CatalogClient({
   initialProducts: ProductWithCategory[];
   categories: Category[];
 }) {
+  const searchParams = useSearchParams();
+  const urlQuery = searchParams.get("q") ?? "";
+  const urlCategory = searchParams.get("category") ?? "";
   const [products, setProducts] = useState<ProductWithCategory[]>(initialProducts);
-  const [query, setQuery] = useState("");
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [query, setQuery] = useState(urlQuery);
+  const [prevUrlQuery, setPrevUrlQuery] = useState(urlQuery);
+  const [activeCategory, setActiveCategory] = useState<string | null>(
+    categories.find((c) => c.slug === urlCategory)?.id ?? null,
+  );
+  const [prevUrlCategory, setPrevUrlCategory] = useState(urlCategory);
+
+  // Re-seed the search box when the header's ?q= param changes (adjusting
+  // state during render — the documented pattern, no effect needed).
+  if (urlQuery !== prevUrlQuery) {
+    setPrevUrlQuery(urlQuery);
+    setQuery(urlQuery);
+  }
+
+  // Apply the active category when the header's ?category=<slug> param changes.
+  if (urlCategory !== prevUrlCategory) {
+    setPrevUrlCategory(urlCategory);
+    setActiveCategory(categories.find((c) => c.slug === urlCategory)?.id ?? null);
+  }
   const [sort, setSort] = useState<SortKey>("newest");
   const [live, setLive] = useState(false);
 

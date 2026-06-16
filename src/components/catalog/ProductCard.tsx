@@ -54,10 +54,10 @@ export function ProductCard({ product }: { product: ProductWithCategory }) {
         </p>
 
         <div className="mt-4 flex items-center justify-between gap-2">
-          <span className="text-lg font-semibold">
+          <span className="min-w-0 truncate text-lg font-semibold">
             {formatPrice(product.price, product.currency)}
           </span>
-          <AddToCartButton product={product} size="sm" />
+          <AddToCartButton product={product} size="sm" className="shrink-0" />
         </div>
       </div>
     </div>
