@@ -30,7 +30,7 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero featured={list.slice(0, 3)} />
+      <Hero featured={list.slice(0, 3)} allProducts={list} />
       <CatalogClient
         initialProducts={list}
         categories={(categories ?? []) as Category[]}
@@ -39,12 +39,18 @@ export default async function HomePage() {
   );
 }
 
-function Hero({ featured }: { featured: ProductWithCategory[] }) {
+function Hero({
+  featured,
+  allProducts,
+}: {
+  featured: ProductWithCategory[];
+  allProducts: ProductWithCategory[];
+}) {
   const fromPrice =
-    featured.length > 0
+    allProducts.length > 0
       ? formatPrice(
-          Math.min(...featured.map((p) => p.price)),
-          featured[0].currency,
+          Math.min(...allProducts.map((p) => p.price)),
+          allProducts[0].currency,
         )
       : null;
 
@@ -65,7 +71,7 @@ function Hero({ featured }: { featured: ProductWithCategory[] }) {
             <CoverImage className="h-[360px] w-full rounded-md object-cover sm:h-[460px] lg:h-[520px]" />
 
             {/* floating product card */}
-            <div className="mt-[-2rem] w-full bg-surface p-6 shadow-xl sm:absolute sm:left-8 sm:top-10 sm:mt-0 sm:max-w-xs sm:p-8">
+            <div className="mt-[-2rem] w-full bg-surface p-6 shadow-xl sm:absolute sm:left-8 sm:top-8 sm:mt-0 sm:max-w-xs sm:p-8">
               <h2 className="text-2xl font-extrabold leading-tight text-brand">
                 Discover our
                 <br />
@@ -88,7 +94,7 @@ function Hero({ featured }: { featured: ProductWithCategory[] }) {
                   <p className="mt-7 text-xs font-bold uppercase tracking-widest text-ink-soft">
                     Products
                   </p>
-                  <ul className="mt-3 divide-y divide-line">
+                  <ul className="mt-3 divide-y divide-line border-b border-line">
                     {featured.map((p) => (
                       <li key={p.id}>
                         <Link

@@ -45,14 +45,35 @@ export function Header() {
   if (pathname.startsWith("/dashboard") || pathname === "/login") return null;
 
   const navLinks = [
-    { href: "/", label: "All" },
-    ...categories.map((c) => ({ href: `/#catalog`, label: c.name })),
+    { href: "/#catalog", label: "All" },
+    ...categories.map((c) => ({
+      href: `/?category=${c.slug}#catalog`,
+      label: c.name,
+    })),
   ];
 
   return (
-    <header className="bg-surface">
+    <header className="relative isolate overflow-hidden bg-[#070713] text-white">
+      {/* cosmic backdrop — deep space gradient + a scatter of stars so the
+          frosted-glass panels above have something to blur. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{
+          background:
+            "radial-gradient(125% 125% at 50% -20%, #2a2a6e 0%, #13132e 45%, #070713 100%)",
+        }}
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-70"
+        style={{
+          backgroundImage:
+            "radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 70% 60%, #fff, transparent), radial-gradient(1.5px 1.5px at 85% 25%, #fff, transparent), radial-gradient(1px 1px at 40% 80%, #c7d2fe, transparent), radial-gradient(1px 1px at 55% 12%, #a5b4fc, transparent), radial-gradient(1.5px 1.5px at 12% 70%, #fff, transparent)",
+        }}
+      />
       {/* top accent bar */}
-      <div className="h-1.5 w-full bg-brand" />
+      <div className="h-1.5 w-full bg-gradient-to-r from-blue-500 via-fuchsia-500 to-blue-500" />
 
       <div className="mx-auto grid max-w-6xl grid-cols-[1fr_auto_1fr] items-center gap-4 px-4 py-5 sm:px-6">
         {/* left: socials */}
@@ -76,18 +97,18 @@ export function Header() {
         {/* center: logo */}
         <Link
           href="/"
-          className="max-w-[16rem] justify-self-center text-center text-lg font-extrabold uppercase leading-tight tracking-tight text-brand sm:max-w-none sm:text-2xl"
+          className="max-w-[16rem] justify-self-center text-center text-lg font-extrabold uppercase leading-tight tracking-tight text-white [text-shadow:0_0_18px_rgba(129,140,248,0.55)] sm:max-w-none sm:text-2xl"
         >
           Thee Brins Safe Market
         </Link>
 
         {/* right: actions */}
-        <div className="flex items-center justify-end gap-3 text-brand">
+        <div className="flex items-center justify-end gap-3 text-white">
           <a
             href={SOCIALS.whatsapp}
             target="_blank"
             rel="noreferrer"
-            className="transition-colors hover:text-brand-dark"
+            className="transition-colors hover:text-blue-300"
             aria-label="Message us"
             title="Message us"
           >
@@ -95,7 +116,7 @@ export function Header() {
           </a>
           <Link
             href="/cart"
-            className="relative transition-colors hover:text-brand-dark"
+            className="relative transition-colors hover:text-blue-300"
             aria-label={`Cart, ${itemCount} item${itemCount === 1 ? "" : "s"}`}
           >
             <CartIcon />
@@ -106,14 +127,14 @@ export function Header() {
 
           {/* search bar — sits after the cart */}
           <form onSubmit={onSearch} role="search" className="hidden items-center md:flex">
-            <div className="flex h-9 items-center rounded-full border border-line bg-canvas pl-3 pr-1 focus-within:border-brand">
+            <div className="flex h-9 items-center rounded-full border border-white/20 bg-white/10 pl-3 pr-1 backdrop-blur-md focus-within:border-white/50">
               <input
                 type="search"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search products…"
                 aria-label="Search products"
-                className="w-28 bg-transparent text-sm text-ink outline-none lg:w-40"
+                className="w-28 bg-transparent text-sm text-white outline-none placeholder:text-white/60 lg:w-40"
               />
               <button
                 type="submit"
@@ -138,14 +159,14 @@ export function Header() {
 
       {/* mobile search — full width under the logo */}
       <form onSubmit={onSearch} role="search" className="px-4 pb-4 md:hidden">
-        <div className="flex h-11 items-center rounded-full border border-line bg-canvas pl-4 pr-1.5 focus-within:border-brand">
+        <div className="flex h-11 items-center rounded-full border border-white/20 bg-white/10 pl-4 pr-1.5 backdrop-blur-md focus-within:border-white/50">
           <input
             type="search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search products…"
             aria-label="Search products"
-            className="w-full bg-transparent text-sm text-ink outline-none"
+            className="w-full bg-transparent text-sm text-white outline-none placeholder:text-white/60"
           />
           <button
             type="submit"
@@ -157,22 +178,19 @@ export function Header() {
         </div>
       </form>
 
-      {/* nav */}
-      <nav className="border-y border-line">
+      {/* nav — frosted glass panel */}
+      <nav className="border-y border-white/10 bg-white/5 backdrop-blur-md">
         <ul
-          className={`mx-auto max-w-6xl text-sm font-bold uppercase tracking-wide text-brand sm:flex sm:justify-center sm:gap-8 sm:px-6 sm:py-3 ${
-            menuOpen ? "flex flex-col" : "hidden sm:flex"
+          className={`mx-auto max-w-6xl text-sm font-bold uppercase tracking-wide text-white sm:flex sm:flex-wrap sm:justify-center sm:gap-3 sm:px-6 sm:py-3 ${
+            menuOpen ? "flex flex-col gap-2 p-4" : "hidden sm:flex"
           }`}
         >
           {navLinks.map((link, i) => (
-            <li
-              key={`${link.label}-${i}`}
-              className="border-b border-line last:border-b-0 sm:border-b-0"
-            >
+            <li key={`${link.label}-${i}`}>
               <Link
                 href={link.href}
                 onClick={() => setMenuOpen(false)}
-                className="block px-4 py-4 transition-colors hover:bg-canvas hover:text-brand-dark sm:px-0 sm:py-0 sm:hover:bg-transparent"
+                className="block rounded-full border border-blue-400/40 bg-blue-500/10 px-4 py-2 text-center text-blue-50 backdrop-blur-sm transition-colors hover:border-blue-300 hover:bg-blue-500/30 hover:text-white"
               >
                 {link.label}
               </Link>
@@ -203,7 +221,7 @@ function Social({
       aria-label={label}
       title={label}
       style={{ ["--social" as string]: color }}
-      className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface text-brand shadow-sm transition-all hover:-translate-y-0.5 hover:border-[var(--social)] hover:bg-[var(--social)] hover:text-white hover:shadow-md"
+      className="grid h-9 w-9 place-items-center rounded-full border border-white/20 bg-white/10 text-white shadow-sm backdrop-blur-sm transition-all hover:-translate-y-0.5 hover:border-[var(--social)] hover:bg-[var(--social)] hover:text-white hover:shadow-md"
     >
       <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor" stroke="none">
         {children}

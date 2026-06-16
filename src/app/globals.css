@@ -16,7 +16,7 @@
   --color-brand-soft: #eef0fb;
   --color-accent: #16a34a;
 
-  --font-sans: var(--font-montserrat), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-clash), ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, monospace;
 
   --radius-card: 0.5rem;
