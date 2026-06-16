@@ -71,7 +71,7 @@ function Hero({
             <CoverImage className="h-[360px] w-full rounded-md object-cover sm:h-[460px] lg:h-[520px]" />
 
             {/* floating product card */}
-            <div className="mt-[-2rem] w-full bg-surface p-6 shadow-xl sm:absolute sm:left-8 sm:top-8 sm:mt-0 sm:max-w-xs sm:p-8">
+            <div className="mt-[-2rem] w-full bg-surface p-6 shadow-xl sm:p-8 lg:absolute lg:left-8 lg:top-8 lg:mt-0 lg:max-w-xs">
               <h2 className="text-2xl font-extrabold leading-tight text-brand">
                 Discover our
                 <br />
