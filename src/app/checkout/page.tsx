@@ -6,6 +6,7 @@ import { useCart } from "@/components/cart/CartProvider";
 import { createClient } from "@/lib/supabase/client";
 import { Button, LinkButton } from "@/components/ui/Button";
 import { formatPrice } from "@/lib/format";
+import { addRecentOrder } from "@/lib/recentOrders";
 
 export default function CheckoutPage() {
   const { items, subtotal, clear } = useCart();
@@ -58,6 +59,14 @@ export default function CheckoutPage() {
       setSubmitting(false);
       return;
     }
+
+    // Remember this order on this device so the customer can re-open it from
+    // /track later without having to keep the order number themselves.
+    addRecentOrder({
+      code: orderId.slice(0, 8),
+      email: String(form.get("email")),
+      placedAt: new Date().toISOString(),
+    });
 
     clear();
     router.push(`/checkout/success?order=${orderId}`);

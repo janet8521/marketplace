@@ -25,6 +25,9 @@ export function Footer() {
           <Link href="/cart" className="hover:text-white">
             Cart
           </Link>
+          <Link href="/track" className="hover:text-white">
+            Track order
+          </Link>
         </div>
       </div>
       <div className="border-t border-white/15 px-4 py-4 text-center text-xs text-white/60 sm:px-6">
