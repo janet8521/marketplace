@@ -32,9 +32,18 @@ export default async function CheckoutSuccessPage({
         by email to arrange fulfilment.
       </p>
       {order && (
-        <p className="mt-4 inline-block rounded-full border border-line bg-surface px-4 py-2 font-mono text-sm">
-          Order #{order.slice(0, 8).toUpperCase()}
-        </p>
+        <>
+          <p className="mt-4 inline-block rounded-full border border-line bg-surface px-4 py-2 font-mono text-sm">
+            Order #{order.slice(0, 8).toUpperCase()}
+          </p>
+          <p className="mt-3 text-sm text-ink-soft">
+            Keep this number — you can{" "}
+            <Link href="/track" className="font-medium text-brand hover:underline">
+              track your order
+            </Link>{" "}
+            anytime with it and your email.
+          </p>
+        </>
       )}
       <div className="mt-8">
         <LinkButton href="/">Continue shopping</LinkButton>
