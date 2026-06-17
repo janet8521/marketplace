@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getCurrentStaff } from "@/lib/auth";
@@ -42,9 +43,10 @@ export default async function OrdersPage() {
       ) : (
         <div className="mt-6 space-y-4">
           {orders.map((order) => (
-            <div
+            <Link
               key={order.id}
-              className="rounded-card border border-line bg-surface p-5"
+              href={`/dashboard/orders/${order.id}`}
+              className="block rounded-card border border-line bg-surface p-5 transition-shadow hover:shadow-lg hover:shadow-black/5"
             >
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
@@ -95,7 +97,7 @@ export default async function OrdersPage() {
                   ))}
                 </ul>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       )}
